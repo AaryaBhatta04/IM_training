@@ -1,9 +1,9 @@
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const commonConfig = require('./webpack.common.js');
+const commonConfig = require('./webpack.common.cjs');
 
-const paths = require('./paths');
+const paths = require('./paths.cjs');
 
 module.exports = function (env) {
     return merge(commonConfig(env), {
