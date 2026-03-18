@@ -12,7 +12,8 @@
 
 // import ComponentWithState from "../6_comp_state/ComponentWithState";
 // import ComponentWithPropsRoot from "../7_comp_props/ComponentWithProps";
-import ComponentWithContentRoot from "../8_comp_content/ComponentWithContent";
+// import ComponentWithContentRoot from "../8_comp_content/ComponentWithContent";
+import PropTypesRoot from "../9_prop_types/PropTypesComponent";
 
 const RootComponent = () => { 
     return (
@@ -22,7 +23,8 @@ const RootComponent = () => {
 
             {/* <ComponentWithState /> */}
             {/* <ComponentWithPropsRoot /> */}
-            <ComponentWithContentRoot />
+            {/* <ComponentWithContentRoot /> */}
+            <PropTypesRoot />
         </div>
     );
 }
