@@ -1,0 +1,11 @@
+.componentTwoCard {
+    margin: 1em;
+    padding-left: 0;
+    border: 2px dashed green;
+}
+
+.card {
+    margin: 1em;
+    padding-left: 0;
+    border: 2px dashed green;
+}

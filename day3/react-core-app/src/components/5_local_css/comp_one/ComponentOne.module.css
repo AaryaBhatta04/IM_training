@@ -1,0 +1,11 @@
+.componentOneCard {
+    margin: 1em;
+    padding-left: 0;
+    border: 2px solid blue;
+}
+
+.card {
+    margin: 1em;
+    padding-left: 0;
+    border: 2px dashed blue;
+}
