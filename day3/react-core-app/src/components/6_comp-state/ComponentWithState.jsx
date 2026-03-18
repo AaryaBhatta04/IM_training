@@ -1,7 +1,5 @@
 // import { Component } from "react";
 
-import { useState } from "react";
-
 // class ComponentWithState extends Component {
 //     constructor() {
 //         super();
@@ -26,6 +24,8 @@ import { useState } from "react";
 
 // export default ComponentWithState;
 
+// ----------------------------------------------- State in Functional Component
+import { useState } from "react";
 
 const ComponentWithState = () => {
     const [name] = useState("Manish");
@@ -36,7 +36,7 @@ const ComponentWithState = () => {
         <>
             <h1 className="text-primary text-center">Component With State</h1>
             <h2 className="text-success">Hello, {name}</h2>
-                <h2 className="text-success">Hello, {message}</h2>
+            <h2 className="text-success">Hello, {message}</h2>
         </>
     );
 }

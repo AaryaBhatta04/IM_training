@@ -11,7 +11,8 @@
 // import ComponentOne from "../5_local_css/comp_one/ComponentOne";
 // import ComponentTwo from "../5_local_css/comp_two/ComponentTwo";
 
-import ComponentWithState from "../6_comp-state/ComponentWithState";
+// import ComponentWithState from "../6_comp-state/ComponentWithState";
+import ComponentWithPropsRoot from "../7_comp-props/ComponentWithProps";
 
 const RootComponent = () => { 
     return (
@@ -19,7 +20,8 @@ const RootComponent = () => {
             {/* <ComponentOne />
             <ComponentTwo /> */}
 
-            <ComponentWithState />
+            {/* <ComponentWithState /> */}
+            <ComponentWithPropsRoot />
         </div>
     );
 }
