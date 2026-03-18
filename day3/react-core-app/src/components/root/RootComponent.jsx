@@ -14,7 +14,8 @@
 // import ComponentWithPropsRoot from "../7_comp_props/ComponentWithProps";
 // import ComponentWithContentRoot from "../8_comp_content/ComponentWithContent";
 // import PropTypesRoot from "../9_prop_types/PropTypesComponent";
-import ComponentWithBehavior from "../10_comp_methods/ComponentWithBehavior";
+// import ComponentWithBehavior from "../10_comp_methods/ComponentWithBehavior";
+import CounterAssignment from "../assignment/CounterAssignment";
 
 const RootComponent = () => { 
     return (
@@ -26,7 +27,8 @@ const RootComponent = () => {
             {/* <ComponentWithPropsRoot /> */}
             {/* <ComponentWithContentRoot /> */}
             {/* <PropTypesRoot /> */}
-            <ComponentWithBehavior />
+            {/* <ComponentWithBehavior /> */}
+            <CounterAssignment />
         </div>
     );
 }
