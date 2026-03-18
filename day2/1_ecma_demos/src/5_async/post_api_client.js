@@ -1,4 +1,5 @@
 const url = "https://jsonplaceholder.typicode.com/posts";
+const url1 = "https://jsonplaceholder.typicode.com/users"
 
 const postApiClient = {
     // Not going to work
@@ -43,6 +44,24 @@ const postApiClient = {
             return await response.json();
         } catch(error) {
             throw new Error(error.message);
+        }
+    },
+    getAllUsersAsync:async function () {
+        try{
+            const response = await fetch(url1);
+            return await response.json();
+        }
+        catch(err){
+            throw new Error(err.message)
+        }
+    },
+    getAllPostsByUserAsync:async function(userId) {
+        try{
+            const response=await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
+            return await response.json();
+        }
+        catch(err){
+            throw new Error(err.message);
         }
     }
 };
