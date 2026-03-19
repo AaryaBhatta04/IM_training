@@ -106,9 +106,9 @@ const Counter = ({ interval = 1 }) => {
     const [count, setCount] = useState(0);
     const [flag, setFlag] = useState(false);
 
-    let clickCount = useRef(0);
-    let firstRender = useRef(true);
-    let isResetting = useRef(false);
+    const clickCount = useRef(0);
+    const firstRender = useRef(true);
+    const isResetting = useRef(false);
 
     const manageClickCount = useCallback(() => {
         clickCount.current++;
