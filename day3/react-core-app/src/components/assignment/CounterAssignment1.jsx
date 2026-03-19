@@ -33,7 +33,7 @@ const CounterControls1=({onAdd,onMinus,onReset})=>{
 
     const handleIncrementClick=()=>{
         if(clickCount<10){
-            setClickCount(clickCount+1);
+            setClickCount((prev)=>(prev+1));
             onAdd();
             // console.log(clickCount);
         }
@@ -41,7 +41,7 @@ const CounterControls1=({onAdd,onMinus,onReset})=>{
 
     const handleDecrementClick=()=>{
         if(clickCount<10){
-            setClickCount(clickCount+1);
+            setClickCount((prev)=>(prev+1));
             onMinus();
             // console.log(clickCount);
         }
