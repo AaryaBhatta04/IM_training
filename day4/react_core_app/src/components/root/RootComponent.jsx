@@ -3,7 +3,8 @@
 // import CounterWithReducer from "../3_reducers/CounterWithReducer";
 // import CounterRoot from "../4_code_structuring/CounterRoot";
 // import CounterRoot from "../5_sibling_communication_via_parent/CounterRoot";
-import ContextRoot from "../7_context_api/ContextApiDemo";
+// import ContextRoot from "../7_context_api/ContextApiDemo";
+import CounterRoot from "../8_sibling_communication_via_context/CounterRoot";
 
 const RootComponent = () => {
     return (
@@ -12,7 +13,8 @@ const RootComponent = () => {
             {/* <CounterParentChildCom /> */}
             {/* <CounterWithReducer /> */}
             {/* <CounterRoot /> */}
-            <ContextRoot />
+            {/* <ContextRoot /> */}
+            <CounterRoot />
         </div>
     );
 }
