@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 const CounterControls = React.memo(({ flag, inc, dec, reset }) => {
     console.log("CounterControls Render Executed");
@@ -19,7 +19,7 @@ const CounterControls = React.memo(({ flag, inc, dec, reset }) => {
     );
 });
 
-const Counter = ({ interval = 1, onMax }) => {
+const Counter = React.forwardRef(({ interval = 1, onMax }, ref) => {
     const [count, setCount] = useState(0);
     const [flag, setFlag] = useState(false);
 
@@ -34,7 +34,7 @@ const Counter = ({ interval = 1, onMax }) => {
         }
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         onMax(flag);
     }, [flag]);
 
@@ -65,6 +65,10 @@ const Counter = ({ interval = 1, onMax }) => {
         setFlag(false);
     }, []);
 
+    useImperativeHandle(ref, () => {
+        return { reset };
+    });
+
     return (
         <>
             <div className="text-center">
@@ -80,7 +84,7 @@ const Counter = ({ interval = 1, onMax }) => {
             </div>
         </>
     );
-}
+});
 
 Counter.propTypes = {
     interval: PropTypes.number,
@@ -89,6 +93,7 @@ Counter.propTypes = {
 
 function CounterParentChildCom() {
     const [message, setMessage] = useState("");
+    const counterRef = useRef(null);
 
     const updateMessage = (flag) => {
         if (flag)
@@ -97,10 +102,21 @@ function CounterParentChildCom() {
             setMessage("");
     }
 
+    const p_reset = () => {
+        // console.log(counterRef.current);
+        if (counterRef.current)
+            counterRef.current.reset();
+    }
+
     return (
         <>
             {message && <h2 className='text-center text-primary'>{message}</h2>}
-            <Counter onMax={updateMessage}/>
+            <Counter onMax={updateMessage} ref={counterRef} />
+            <div className="d-grid gap-2 mx-auto col-6 mt-4">
+                <button className="btn btn-warning" onClick={p_reset}>
+                    <span className='fs-4'>Parent Reset</span>
+                </button>
+            </div>
         </>
     );
 }
@@ -112,6 +128,12 @@ export default CounterParentChildCom;
 // - Counter passes flag, inc, dec, reset to CounterControls
 // - CounterParentChildCom passes interval and onMax callback to Counter
 
-// 2. Child → Parent (via Callback Props)
+// 2. Child → Parent (via Callback Props) - Child wants to call Parent Method
+// - CounterParentChildCom passes onMax callback to Counter
 // - Counter calls onMax(flag) to notify CounterAssignment when max clicks are reached
-// - CounterAssignment receives this via updateMessage and updates its own message state
+// - CounterParentChildCom receives this via updateMessage and updates its own message state
+
+// 3. Parent → Child - (via Ref + useImperativeHandle)- Parent wants to call Child method
+// - Counter uses React.forwardRef and useImperativeHandle to expose its reset method to the parent
+// - CounterParentChildCom holds a counterRef and can call into the child via counterRef.current
+// - The "Parent Reset" button triggers p_reset which accesses the child through the ref
