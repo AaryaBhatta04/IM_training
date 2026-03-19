@@ -100,7 +100,7 @@
 
 // ------------------------------------------------------------- Functional Code
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const Counter = ({ interval = 1 }) => {
     const [count, setCount] = useState(0);
@@ -108,35 +108,41 @@ const Counter = ({ interval = 1 }) => {
 
     let clickCount = useRef(0);
     let firstRender = useRef(true);
+    let isResetting = useRef(false);
 
-    const manageClickCount = () => {
+    const manageClickCount = useCallback(() => {
         clickCount.current++;
         if (clickCount.current > 9) {
             setFlag(true);
         }
-    }
+    }, []);
 
     useEffect(() => {
         if (firstRender.current) {
             firstRender.current = false;
             return;
         }
+        if (isResetting.current) {
+            isResetting.current = false;
+            return;
+        }
         manageClickCount();
-    }, [count]);
+    }, [count, manageClickCount]);
 
-    const inc = () => {
+    const inc = useCallback(() => {
         setCount(prev => prev + interval);
-    }
+    }, [interval]);
 
-    const dec = () => {
+    const dec = useCallback(() => {
         setCount(prev => prev - interval);
-    }
+    }, [interval]);
 
-    const reset = () => {
+    const reset = useCallback(() => {
+        isResetting.current = true;
         clickCount.current = 0;
         setCount(0);
         setFlag(false);
-    }
+    }, []);
 
     return (
         <>
@@ -155,66 +161,13 @@ const Counter = ({ interval = 1 }) => {
     );
 }
 
-// class Counter1 extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = { count: 0, flag: false };
-//         this.clickCount = 0;
-//         this.inc = this.inc.bind(this)
-//         this.dec = this.dec.bind(this)
-//         this.reset = this.reset.bind(this)
-//     }
-
-//     manageClickCount() {
-//         this.clickCount += 1;
-//         if (this.clickCount > 9) {
-//             this.setState({ flag: true });
-//         }
-//     }
-
-//     inc() {
-//         this.setState(
-//             (prev) => ({ count: prev.count + this.props.interval }),
-//             () => { this.manageClickCount(); });
-//     }
-
-//     dec() {
-//         this.setState(
-//             (prev) => ({ count: prev.count - this.props.interval }),
-//             () => { this.manageClickCount(); });
-//     }
-
-//     reset() {
-//         this.clickCount = 0;
-//         this.setState({ count: 0, flag: false });
-//     }
-
-//     render() {
-//         const { count, flag } = this.state;
-
-//         return (
-//             <>
-//                 <div className="text-center">
-//                     <h3 className="text-info">Counter Component</h3>
-//                 </div>
-//                 <div className="d-grid gap-2 mx-auto col-6">
-//                     <input type="text" className="form-control form-control-lg" value={count} readOnly />
-//                     <CounterControls
-//                         flag={flag}
-//                         inc={this.inc}
-//                         dec={this.dec}
-//                         reset={this.reset} />
-//                 </div>
-//             </>
-//         );
-//     }
-// }
-
 Counter.propTypes = {
     interval: PropTypes.number
 }
 
-function CounterControls({ flag, inc, dec, reset }) {
+const CounterControls = React.memo(({ flag, inc, dec, reset }) => {
+    console.log("CounterControls Render Executed");
+
     return (
         <div className="d-grid gap-2">
             <button className="btn btn-info" disabled={flag} onClick={inc}>
@@ -228,7 +181,7 @@ function CounterControls({ flag, inc, dec, reset }) {
             </button>
         </div>
     );
-}
+});
 
 function CounterAssignment() {
     return (
