@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { CounterAlt } from './CounterAlt';
 import { CounterMonitor } from './CounterMonitor';
-import { setFlag, sreset } from './counter_actions';
+import { ACTIONS, setFlag, sreset } from './counter_actions';
 import { counterReducer, initialState } from './counter_reducer';
 
 const CounterRoot = () => {
     const [state, dispatch] = useReducer(counterReducer, initialState);
     const [message, setMessage] = useState("");
-
-    const clickCount = useRef(0);
-    const firstRender = useRef(true);
-    const isResetting = useRef(false);
+    const [clickCount, setClickCount] = useState(0);
 
     const updateMessage = useCallback((flag) => {
         if (flag)
@@ -23,35 +20,32 @@ const CounterRoot = () => {
         updateMessage(state.flag);
     }, [state.flag, updateMessage]);
 
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false;
-            return;
+    const wrappedDispatch = useCallback((action) => {
+        if (action.type === ACTIONS.INCREMENT || action.type === ACTIONS.DECREMENT) {
+            setClickCount(prev => {
+                const newCount = prev + 1;
+                if (newCount > 9) {
+                    dispatch(setFlag(true));
+                }
+                return newCount;
+            });
         }
-        if (isResetting.current) {
-            isResetting.current = false;
-            return;
-        }
-        clickCount.current++;
-        if (clickCount.current > 9) {
-            dispatch(setFlag(true));
-        }
-    }, [state.count]);
+        dispatch(action);
+    }, []);
 
     const resetAll = useCallback(() => {
-        isResetting.current = true;
-        clickCount.current = 0;
+        setClickCount(0);
         dispatch(sreset());
     }, []);
 
-    const remaining = 10 - clickCount.current;
+    const remaining = 10 - clickCount;
 
     return (
         <>
             {message && <h2 className='text-center text-primary'>{message}</h2>}
             <div className="row">
                 <div className="col-6">
-                    <CounterAlt state={state} dispatch={dispatch} interval={5} remaining={remaining} onReset={resetAll} />
+                    <CounterAlt state={state} dispatch={wrappedDispatch} interval={5} remaining={remaining} onReset={resetAll} />
                 </div>
                 <div className="col-6">
                     <CounterMonitor state={state} remaining={remaining} onReset={resetAll} />

@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Counter } from './Counter';
 import { CounterAlt } from './CounterAlt';
-import { setFlag, sreset } from './counter_actions';
+import { ACTIONS, setFlag, sreset } from './counter_actions';
 import { counterReducer, initialState } from './counter_reducer';
 
 const CounterRoot = () => {
     const [state, dispatch] = useReducer(counterReducer, initialState);
     const [message, setMessage] = useState("");
-
-    const clickCount = useRef(0);
-    const firstRender = useRef(true);
-    const isResetting = useRef(false);
+    const [clickCount, setClickCount] = useState(0);
 
     const updateMessage = useCallback((flag) => {
         if (flag)
@@ -23,35 +20,32 @@ const CounterRoot = () => {
         updateMessage(state.flag);
     }, [state.flag, updateMessage]);
 
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false;
-            return;
+    const wrappedDispatch = useCallback((action) => {
+        if (action.type === ACTIONS.INCREMENT || action.type === ACTIONS.DECREMENT) {
+            setClickCount(prev => {
+                const newCount = prev + 1;
+                if (newCount > 9) {
+                    dispatch(setFlag(true));
+                }
+                return newCount;
+            });
         }
-        if (isResetting.current) {
-            isResetting.current = false;
-            return;
-        }
-        clickCount.current++;
-        if (clickCount.current > 9) {
-            dispatch(setFlag(true));
-        }
-    }, [state.count]);
+        dispatch(action);
+    }, []);
 
     const resetAll = useCallback(() => {
-        isResetting.current = true;
-        clickCount.current = 0;
+        setClickCount(0);
         dispatch(sreset());
     }, []);
 
-    const remaining = 10 - clickCount.current;
+    const remaining = 10 - clickCount;
 
     return (
         <>
             {message && <h2 className='text-center text-primary'>{message}</h2>}
             <div className="row">
                 <div className="col-6">
-                    <Counter state={state} dispatch={dispatch} remaining={remaining} onReset={resetAll} />
+                    <Counter state={state} dispatch={wrappedDispatch} remaining={remaining} onReset={resetAll} />
                     <div className="d-grid gap-2 mx-auto col-6 mt-4">
                         <button className="btn btn-warning" onClick={resetAll}>
                             <span className='fs-4'>Parent Reset</span>
@@ -59,7 +53,7 @@ const CounterRoot = () => {
                     </div>
                 </div>
                 <div className="col-6">
-                    <CounterAlt state={state} dispatch={dispatch} interval={5} remaining={remaining} onReset={resetAll} />
+                    <CounterAlt state={state} dispatch={wrappedDispatch} interval={5} remaining={remaining} onReset={resetAll} />
                 </div>
             </div>
 

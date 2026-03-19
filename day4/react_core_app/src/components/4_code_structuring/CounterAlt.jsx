@@ -1,49 +1,37 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useImperativeHandle, useReducer, useRef } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useReducer, useState } from 'react';
 import { decrement, increment, setFlag, sreset } from './counter_actions';
 import { counterReducer, initialState } from './counter_reducer';
 
 export const CounterAlt = React.forwardRef(({ interval = 1, onMax }, ref) => {
     const [state, dispatch] = useReducer(counterReducer, initialState);
-
-    const clickCount = useRef(0);
-    const firstRender = useRef(true);
-    const isResetting = useRef(false);
-
-    const manageClickCount = useCallback(() => {
-        clickCount.current++;
-        if (clickCount.current > 9) {
-            dispatch(setFlag(true));
-        }
-    }, []);
+    const [clickCount, setClickCount] = useState(0);
 
     useEffect(() => {
         onMax(state.flag);
     }, [state.flag]);
 
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false;
-            return;
-        }
-        if (isResetting.current) {
-            isResetting.current = false;
-            return;
-        }
-        manageClickCount();
-    }, [state.count, manageClickCount]);
+    const handleClick = useCallback((action) => {
+        dispatch(action);
+        setClickCount(prev => {
+            const newCount = prev + 1;
+            if (newCount > 9) {
+                dispatch(setFlag(true));
+            }
+            return newCount;
+        });
+    }, []);
 
     const inc = useCallback(() => {
-        dispatch(increment(interval));
-    }, [interval]);
+        handleClick(increment(interval));
+    }, [interval, handleClick]);
 
     const dec = useCallback(() => {
-        dispatch(decrement(interval));
-    }, [interval]);
+        handleClick(decrement(interval));
+    }, [interval, handleClick]);
 
     const reset = useCallback(() => {
-        isResetting.current = true;
-        clickCount.current = 0;
+        setClickCount(0);
         dispatch(sreset());
     }, []);
 
@@ -51,7 +39,7 @@ export const CounterAlt = React.forwardRef(({ interval = 1, onMax }, ref) => {
         return { reset };
     });
 
-    const remaining = 10 - clickCount.current;
+    const remaining = 10 - clickCount;
 
     return (
         <>
