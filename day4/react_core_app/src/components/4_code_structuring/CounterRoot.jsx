@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Counter } from './Counter';
 import { CounterAlt } from './CounterAlt';
+import CounterUi from './CounterUi';
 
 const CounterRoot = () => {
     const [message, setMessage] = useState("");
@@ -31,7 +32,8 @@ const CounterRoot = () => {
                     </div>
                 </div>
                 <div className="col-6">
-                    <CounterAlt interval={5} onMax={updateMessage} />
+                    {/* <CounterAlt interval={5} onMax={updateMessage} /> */}
+                    <CounterUi interval={5} onMax={updateMessage}></CounterUi>
                 </div>
             </div>
 
