@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import DataTable from '../common/DataTable';
 
 // const ListItem = ({item}) => <li className='list-group-item'>{item.name}</li>;
 
@@ -66,12 +67,36 @@ const ListRoot = () => {
         { id: 5, name: "Abhishek" }
     ]);
 
+    const [posts] = useState([
+        {
+            userId: 1,
+            id: 1,
+            title: "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+            body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+        },
+        {
+            userId: 1,
+            id: 2,
+            title: "qui est esse",
+            body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+        }
+    ]);
+
     return (
         <>
             {/* <ListComponent items={employees} /> */}
-            <TableComponent items={employees}>
+            {/* <TableComponent items={employees}>
                 <h3 className='text-center text-info'>Employees Table</h3>
-            </TableComponent>
+            </TableComponent> */}
+            {/* <TableComponent items={posts}>
+                <h3 className='text-center text-info'>Posts Table</h3>
+            </TableComponent>  */}
+            <DataTable items={employees}>
+                <h3 className='text-center text-info'>Employees Table</h3>
+            </DataTable>
+            <DataTable items={posts}>
+                <h3 className='text-center text-info'>Posts Table</h3>
+            </DataTable>
         </>
     );
 };
