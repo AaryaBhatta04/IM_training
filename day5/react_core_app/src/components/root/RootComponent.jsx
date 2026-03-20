@@ -6,7 +6,7 @@ import ErrorBoundary from "../common/ErrorBoundary";
 
 const RootComponent = () => {
     return (
-        <div className="container mt-4">
+        <div className="container">
             <ErrorBoundary>
                 {/* <EventComponent /> */}
                 {/* <ControlledVsUncontrolledComponent /> */}

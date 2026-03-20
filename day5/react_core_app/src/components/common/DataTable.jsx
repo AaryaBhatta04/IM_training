@@ -33,11 +33,11 @@ const Tr = ({ item }) => {
 }
 
 const DataTable = ({ children, items }) => {
-    if (items && items.length) {
+    // if (items && items.length) {
         const [item] = items;
         var headers = <Th item={item} />;
         var trs = items.map((item) => <Tr key={item.id} item={item} />);
-    }
+    // }
 
     return (
         <>
