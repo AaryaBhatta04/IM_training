@@ -91,11 +91,16 @@ const ListRoot = () => {
             {/* <TableComponent items={posts}>
                 <h3 className='text-center text-info'>Posts Table</h3>
             </TableComponent>  */}
-            <DataTable items={employees}>
+            
+            {/* <DataTable items={employees}>
                 <h3 className='text-center text-info'>Employees Table</h3>
             </DataTable>
             <DataTable items={posts}>
                 <h3 className='text-center text-info'>Posts Table</h3>
+            </DataTable> */}
+            
+            <DataTable items={[]}>
+                <h3 className='text-center text-info'>Empty Table</h3>
             </DataTable>
         </>
     );
