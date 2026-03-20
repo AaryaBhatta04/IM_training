@@ -1,7 +1,8 @@
 // import EventComponent from "../1_react_events/EventComponent";
 // import ControlledVsUncontrolledComponent from "../2_controlled_vs_uncontrolled/ControlledVsUncontrolledComponent";
 // import CalculatorAssignment from "../3_assignment/CalculatorAssignment";
-import ListRoot from "../4_working_with_arrays/ListComponent";
+// import ListRoot from "../4_working_with_arrays/ListComponent";
+import CrudAssignment from "../5_assignment/CrudAssignment";
 import ErrorBoundary from "../common/ErrorBoundary";
 
 const RootComponent = () => {
@@ -11,7 +12,8 @@ const RootComponent = () => {
                 {/* <EventComponent /> */}
                 {/* <ControlledVsUncontrolledComponent /> */}
                 {/* <CalculatorAssignment /> */}
-                <ListRoot />
+                {/* <ListRoot /> */}
+                <CrudAssignment />
             </ErrorBoundary>
         </div>
     );
