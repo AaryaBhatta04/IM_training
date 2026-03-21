@@ -28,12 +28,21 @@ const RootComponent = () => {
             },
 
             response: function (response) {
-                // Modify the reponse object
+                if (!response.ok) {
+                    const errorMessages = {
+                        400: "Invalid request. Please try again.",
+                        401: "Please log in to access this resource.",
+                        403: "You do not have permission to access this resource.",
+                        404: "The requested resource was not found.",
+                        500: "Something went wrong on the server. Please try again later.",
+                    };
+                    const message = errorMessages[response.status] || `Unexpected error occurred (Code: ${response.status})`;
+                    return Promise.reject(message);
+                }
                 return response;
             },
 
             responseError: function (error) {
-                // Handle an fetch error
                 return Promise.reject(error);
             }
         });
