@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import AppRoutes from '../../routes/index';
 import './NavigationComponent.css';
 
 var logo = require('../../logo.svg').default;
@@ -60,6 +61,10 @@ const NavigationComponent = () => {
                     </div>
                 </div>
             </nav>
+
+            <>
+                {AppRoutes}
+            </>
         </>
     );
 };
