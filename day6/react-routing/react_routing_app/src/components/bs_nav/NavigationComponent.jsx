@@ -1,10 +1,18 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import AppRoutes from '../../routes/index';
+import authenticatorApiClient from '../../services/authenticator_api_client';
 import './NavigationComponent.css';
 
 var logo = require('../../logo.svg').default;
 
 const NavigationComponent = () => {
+    const navigate = useNavigate();
+    const isLoggedIn = authenticatorApiClient.isAuthenticated;
+
+    const handleLogout = () => {
+        authenticatorApiClient.logOut();
+        navigate("/login");
+    };
     return (
         <>
             <nav className="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
@@ -51,12 +59,21 @@ const NavigationComponent = () => {
                                 </NavLink>
                             </li>
 
-                            <li className="nav-item px-3">
-                                <NavLink className="nav-link d-flex flex-column align-items-center" to="/login">
-                                    <i className="bi bi-person-square"></i>
-                                    <span>Login</span>
-                                </NavLink>
-                            </li>
+                            {isLoggedIn ? (
+                                <li className="nav-item px-3">
+                                    <button className="nav-link d-flex flex-column align-items-center btn btn-link" onClick={handleLogout}>
+                                        <i className="bi bi-box-arrow-right"></i>
+                                        <span>Logout</span>
+                                    </button>
+                                </li>
+                            ) : (
+                                <li className="nav-item px-3">
+                                    <NavLink className="nav-link d-flex flex-column align-items-center" to="/login">
+                                        <i className="bi bi-person-square"></i>
+                                        <span>Login</span>
+                                    </NavLink>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
