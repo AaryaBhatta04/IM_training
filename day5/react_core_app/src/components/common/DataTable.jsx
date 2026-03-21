@@ -43,7 +43,7 @@ const Tr = ({ item, onSelect, onDelete }) => {
     );
 
     const tds = allValues.map((item, index) => {
-        return <th key={`${item.id}-${index}`}>{item}</th>
+        return <td key={`${item.id}-${index}`}>{item}</td>
     });
 
     return (

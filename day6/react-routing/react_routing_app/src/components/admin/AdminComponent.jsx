@@ -1,24 +1,47 @@
-import { useEffect, useState } from 'react';
-import productsAPIClient from '../../services/products_api_client';
+// import { useEffect, useState } from 'react';
+// import productsAPIClient from '../../services/products_api_client';
+// import DataTable from '../common/DataTable';
+
+// const AdminComponent = () => {
+//     const [cState, setCState] = useState({ products: [], message: "Loading data, please wait..." });
+
+//     useEffect(() => {
+//         productsAPIClient.getAllProducts().then((data) => {
+//             setCState({ products: data, message: "" });
+//         }).catch((eMsg) => {
+//             setCState({ products: [], message: eMsg });
+//         })
+//     }, []);
+
+//     return (
+//         <div className='text-center'>
+//             <h1 className="text-primary">Admin Component</h1>
+//             <hr />
+//             <h3 className="text-danger">{cState.message}</h3>
+//             <DataTable items={cState.products}>
+//                 <h4 className="text-primary text-uppercase font-weight-bold">Products Table</h4>
+//             </DataTable>
+//         </div>
+//     );
+// };
+
+// export default AdminComponent;
+
+// ---------------------------------------------- Via Provider and Context
+import { useProducts } from '../../contexts/ProductsApiProvider';
 import DataTable from '../common/DataTable';
 
 const AdminComponent = () => {
-    const [cState, setCState] = useState({ products: [], message: "Loading data, please wait..." });
+    const { products, loading, error } = useProducts();
 
-    useEffect(() => {
-        productsAPIClient.getAllProducts().then((data) => {
-            setCState({ products: data, message: "" });
-        }).catch((eMsg) => {
-            setCState({ products: [], message: eMsg });
-        })
-    }, []);
+    const message = loading ? "Loading data, please wait..." : error;
 
     return (
         <div className='text-center'>
             <h1 className="text-primary">Admin Component</h1>
             <hr />
-            <h3 className="text-danger">{cState.message}</h3>
-            <DataTable items={cState.products}>
+            <h3 className="text-danger">{message}</h3>
+            <DataTable items={products}>
                 <h4 className="text-primary text-uppercase font-weight-bold">Products Table</h4>
             </DataTable>
         </div>
@@ -26,3 +49,9 @@ const AdminComponent = () => {
 };
 
 export default AdminComponent;
+
+// Dependency injection - Easy to mock for testing
+// Centralized management - Single source of truth
+// Prop drilling avoidance - No need to pass services down multiple levels
+// Loose coupling - Components don't directly depend on service implementations
+// Easy swapping - Can change service implementations without touching components
