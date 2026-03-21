@@ -31,7 +31,7 @@ const LoginComponent = () => {
     }
 
     return (
-        <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+        <div className="d-flex align-items-center justify-content-center bg-light" style={{ minHeight: "calc(100vh - 80px)" }}>
             <div className="container" style={{ maxWidth: "420px" }}>
                 <div className="card shadow-lg border-0 rounded-4">
                     <div
