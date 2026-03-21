@@ -1,11 +1,13 @@
-import HOCDemoRoot from "../1_hoc_demo/HOCDemo";
+// import HOCDemoRoot from "../1_hoc_demo/HOCDemo";
+import AjaxComponent from "../2_ajax/AjaxComponent";
 import ErrorBoundary from "../common/ErrorBoundary";
 
 const RootComponent = () => {
     return (
         <div className="container">
             <ErrorBoundary>
-                <HOCDemoRoot />
+                {/* <HOCDemoRoot /> */}
+                <AjaxComponent />
             </ErrorBoundary>
         </div>
     );
