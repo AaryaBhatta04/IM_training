@@ -1,6 +1,7 @@
+import ErrorBoundaryHOC from "../common/ErrorBoundaryHOC";
 
-const ComponentOne = () => {
-    // throw new Error("Check Error");
+const ComponentOne = ErrorBoundaryHOC(() => {
+    throw new Error("Check Error");
     return (
         <>
             <h1 className="text-primary">Hello From Component One</h1>
@@ -13,7 +14,7 @@ const ComponentOne = () => {
             <button className="btn btn-primary">Click Me</button>
         </>
     );
-};
+});
 
 const ComponentTwo = () => {
     return (
