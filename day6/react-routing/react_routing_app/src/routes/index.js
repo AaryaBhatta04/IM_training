@@ -7,6 +7,7 @@ import NoMatchComponent from "../components/no_match/NoMatchComponent";
 import ProductDetailsComponent from "../components/products/ProductDetailsComponent";
 import ProductNotSelectedComponent from "../components/products/ProductNotSelectedComponent";
 import ProductsComponent from "../components/products/ProductsComponent";
+import ProductsApiProvider from "../contexts/ProductsApiProvider";
 import ProductsProvider from "../contexts/ProductsProvider";
 
 export default (
@@ -21,7 +22,11 @@ export default (
             <Route path="" element={<ProductNotSelectedComponent />} />
             <Route path=":productId" element={<ProductDetailsComponent />} />
         </Route>
-        <Route path="/admin" element={<AdminComponent />} />
+        <Route path="/admin" element={
+            <ProductsApiProvider>
+                <AdminComponent />
+            </ProductsApiProvider>
+        } />
         <Route path="/login" element={<LoginComponent />} />
         <Route path="*" element={<NoMatchComponent />} />
     </Routes>
