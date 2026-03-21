@@ -25,6 +25,7 @@ const ProductsApiProvider = ({ children }) => {
             const data = await productsAPIClient.getAllProducts();
             setProducts(data);
         } catch (err) {
+            console.log("Provider: ", err);
             setError(err);
         } finally {
             setLoading(false);
