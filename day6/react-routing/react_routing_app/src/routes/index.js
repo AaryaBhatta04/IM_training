@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AboutComponent from "../components/about/AboutComponent";
 import AdminComponent from "../components/admin/AdminComponent";
 import HomeComponent from "../components/home/HomeComponent";
@@ -9,6 +9,18 @@ import ProductNotSelectedComponent from "../components/products/ProductNotSelect
 import ProductsComponent from "../components/products/ProductsComponent";
 import ProductsApiProvider from "../contexts/ProductsApiProvider";
 import ProductsProvider from "../contexts/ProductsProvider";
+import authenticatorApiClient from "../services/authenticator_api_client";
+
+// Route Guard
+const SecuredRoute = ({ children }) => {
+    let location = useLocation();
+
+    if (authenticatorApiClient.isAuthenticated) {
+        return children;
+    } else {
+        return <Navigate to="/login" state={{ from: location }} />
+    }
+}
 
 export default (
     <Routes>
@@ -23,9 +35,11 @@ export default (
             <Route path=":productId" element={<ProductDetailsComponent />} />
         </Route>
         <Route path="/admin" element={
-            <ProductsApiProvider>
-                <AdminComponent />
-            </ProductsApiProvider>
+            <SecuredRoute>
+                <ProductsApiProvider>
+                    <AdminComponent />
+                </ProductsApiProvider>
+            </SecuredRoute>
         } />
         <Route path="/login" element={<LoginComponent />} />
         <Route path="*" element={<NoMatchComponent />} />

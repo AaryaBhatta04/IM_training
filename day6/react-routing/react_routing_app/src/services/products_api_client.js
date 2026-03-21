@@ -1,9 +1,18 @@
+import authenticatorApiClient from "./authenticator_api_client";
+
 const url = process.env.REACT_APP_PRODUCTS_API_URL;
 
 const productsAPIClient = {
     getAllProducts: function () {
         var promise = new Promise((resolve, reject) => {
-            fetch(url).then((res) => {
+            let fData = {
+                method: "GET",
+                headers: {
+                    "x-access-token": authenticatorApiClient.getToken()
+                }
+            };
+            
+            fetch(url, fData).then((res) => {
                 if (!res.ok) {
                     const errorMessages = {
                         400: "Invalid request. Please try again.",
