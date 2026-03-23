@@ -45,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../features/products/productsSlice";
 import LoaderAnimation from "../common/LoaderAnimation";
 import ToastNotification from '../common/ToastNotification';
+import AddProductButton from "./AddProductButton";
 import ProductListComponent from "./ProductListComponent";
 
 const ProductsComponent = () => {
@@ -92,6 +93,7 @@ const ProductsComponent = () => {
         return (
             <>
                 <div className="mt-5 mb-3 d-flex gap-3">
+                    <AddProductButton />
                     <button className='btn btn-warning btn-lg mx-2' onClick={handleRefresh}>
                         <span className='bi bi-arrow-clockwise'></span>
                         &nbsp;Refresh Products

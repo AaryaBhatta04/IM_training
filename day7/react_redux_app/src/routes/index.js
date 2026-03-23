@@ -10,6 +10,7 @@ const HomeComponent = lazy(() => import("../components/home/HomeComponent"));
 const NoMatchComponent = lazy(() => import("../components/no_match/NoMatchComponent"));
 const CounterRoot = lazy(() => import("../components/counter/CounterRoot"));
 const ProductsComponent = lazy(() => import("../components/products/ProductsComponent"));
+const ManageProductComponent = lazy(() => import("../components/products/ManageProductComponent"));
 
 export default (
     <Suspense fallback={<LoaderAnimation />}>
@@ -18,6 +19,8 @@ export default (
             <Route path="/about" element={<AboutComponent />} />
             <Route path="/counter" element={<CounterRoot />} />
             <Route path="/products" element={<ProductsComponent />} />
+            <Route path="/product/:id" element={<ManageProductComponent />} />
+            <Route path="/product" element={<ManageProductComponent />} />
             <Route path="*" element={<NoMatchComponent />} />
         </Routes>
     </Suspense>
