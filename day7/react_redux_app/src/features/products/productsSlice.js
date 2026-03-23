@@ -75,7 +75,15 @@ export const updateProduct = createAsyncThunk("products/updateProduct", async (p
     try {
         return await productAPIClient.updateProduct(product);
     } catch (error) {
-        return rejectWithValue(error.message || 'Error occured while updating products');
+        return rejectWithValue(error.message || 'Error occured while updating product');
+    }
+});
+
+export const deleteProduct = createAsyncThunk("products/deleteProduct", async (productId, { rejectWithValue }) => {
+    try {
+        return await productAPIClient.deleteProduct({ id: productId });
+    } catch (error) {
+        return rejectWithValue(error.message || 'Error occured while deleting product');
     }
 });
 
@@ -133,6 +141,21 @@ export const productsSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateProduct.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+
+            .addCase(deleteProduct.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const { id } = action.payload;
+                state.items = state.items.filter(product => product.id !== id);
+                state.error = null;
+            })
+            .addCase(deleteProduct.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
             })

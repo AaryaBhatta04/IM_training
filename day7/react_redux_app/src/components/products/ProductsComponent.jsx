@@ -43,7 +43,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { fetchProducts } from "../../features/products/productsSlice";
+import { deleteProduct, fetchProducts } from "../../features/products/productsSlice";
 import { useReplaceHistoryState } from "../../hooks/useRelaceHistoryState";
 import ConfirmModal from '../common/ConfirmModal';
 import LoaderAnimation from "../common/LoaderAnimation";
@@ -60,6 +60,7 @@ const ProductsComponent = () => {
 
     const [show, setShow] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
+    const [productToDelete, setproductToDelete] = useState(null);
 
     const replaceState = useReplaceHistoryState();
 
@@ -87,6 +88,18 @@ const ProductsComponent = () => {
 
     const handleDeleteProduct = (product) => {
         setShow(true);
+        setproductToDelete(product);
+    }
+
+    const handleYes = async () => {
+        try {
+            await dispatch(deleteProduct(productToDelete.id)).unwrap();
+            setShow(false);
+            setToast({ show: true, message: 'Product deleted successfully', type: 'success' });
+        } catch (error) {
+            setShow(false);
+            setToast({ show: true, message: `Failed to delete product: ${error}`, type: 'danger' });
+        }
     }
 
     if (error) {
@@ -125,9 +138,7 @@ const ProductsComponent = () => {
                 />
                 <ConfirmModal show={show} title={"Confirm Delete Product"}
                     message={`Are you sure, you want to delete this product?`}
-                    handleYes={() => {
-                        setShow(false);
-                    }}
+                    handleYes={handleYes}
                     handleNo={() => {
                         setShow(false);
                     }} />

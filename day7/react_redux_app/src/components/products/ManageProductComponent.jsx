@@ -8,6 +8,8 @@ import ProductFormComponent from "./ProductFormComponent";
 const ManageProductComponent = () => {
     const { id } = useParams();
     const products = useSelector(state => state.products.items);
+    const status = useSelector(state => state.products.status);
+    const isLoading = status === 'loading';
     const [product, setProduct] = useState({ id: "", name: "", description: "", status: "" });
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
     const dispatch = useDispatch();
@@ -46,7 +48,7 @@ const ManageProductComponent = () => {
 
     return (
         <>
-            <ProductFormComponent pageText={pageText} product={product} onChange={updateState} onSave={saveProduct} />
+            <ProductFormComponent pageText={pageText} product={product} onChange={updateState} onSave={saveProduct} isLoading={isLoading} />
             <ToastNotification
                 show={toast.show}
                 onClose={() => setToast({ ...toast, show: false })}

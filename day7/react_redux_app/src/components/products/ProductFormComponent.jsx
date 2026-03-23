@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import TextInput from '../common/TextInput';
 
-const ProductFormComponent = ({ pageText, product, onChange, onSave }) => {
+const ProductFormComponent = ({ pageText, product, onChange, onSave, isLoading }) => {
     return (
         <>
             <h1 className="text-info text-center">{pageText}</h1>
@@ -22,8 +22,10 @@ const ProductFormComponent = ({ pageText, product, onChange, onSave }) => {
                             <TextInput name="status" label="Status" value={product.status} onChange={onChange} />
 
                             <div className="d-grid gap-2 mx-auto col mt-3">
-                                <button type='submit' className="btn btn-success">Save</button>
-                                <button type='button' className="btn btn-secondary">Reset</button>
+                                <button type='submit' className="btn btn-success" disabled={isLoading}>
+                                    {isLoading ? 'Saving...' : 'Save'}
+                                </button>
+                                <button type='button' className="btn btn-secondary" disabled={isLoading}>Reset</button>
                             </div>
                         </fieldset>
                     </form>
