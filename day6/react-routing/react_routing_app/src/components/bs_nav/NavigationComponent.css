@@ -10,8 +10,10 @@ nav li a:hover {
 
 nav li a.active {
     border-radius: 15px;
-    font-weight: bold;
-    text-transform: uppercase;
     background-color: yellowgreen;
     cursor: pointer;
+}
+
+nav li a {
+    min-width: 90px;
 }
