@@ -2,21 +2,9 @@
   "products": [
     {
       "id": "1",
-      "pname": "Item One",
-      "price": 100,
-      "stock": 50
-    },
-    {
-      "id": "2",
-      "pname": "Item Two",
-      "price": 200,
-      "stock": 30
-    },
-    {
-      "id": "35f5",
-      "pname": "12",
-      "price": 2222,
-      "stock": 1111
+      "name": "Item One",
+      "description": "Widget",
+      "status": "Available"
     }
   ]
 }
