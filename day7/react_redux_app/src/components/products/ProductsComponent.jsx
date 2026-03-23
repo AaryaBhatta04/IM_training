@@ -61,6 +61,7 @@ const ProductsComponent = () => {
     const [show, setShow] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
     const [productToDelete, setproductToDelete] = useState(null);
+    const [deleting, setDeleting] = useState(false);
 
     const replaceState = useReplaceHistoryState();
 
@@ -92,13 +93,16 @@ const ProductsComponent = () => {
     }
 
     const handleYes = async () => {
+        setShow(false);
+        setDeleting(true);
+
         try {
             await dispatch(deleteProduct(productToDelete.id)).unwrap();
-            setShow(false);
             setToast({ show: true, message: 'Product deleted successfully', type: 'success' });
         } catch (error) {
-            setShow(false);
             setToast({ show: true, message: `Failed to delete product: ${error}`, type: 'danger' });
+        } finally {
+            setDeleting(false);
         }
     }
 
@@ -117,11 +121,22 @@ const ProductsComponent = () => {
                 </div>
             </div>
         );
-    } else if (status === 'loading') {
-        <LoaderAnimation />
+    } else if (status === 'loading' && !deleting) {
+        return <LoaderAnimation />
     } else {
         return (
-            <>
+            <div>
+                {deleting && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 1050,
+                        display: 'flex', justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <div className="spinner-border text-light" role="status">
+                            <span className="visually-hidden">Deleting...</span>
+                        </div>
+                    </div>
+                )}
                 <div className="mt-5 mb-3 d-flex gap-3">
                     <AddProductButton />
                     <button className='btn btn-warning btn-lg mx-2' onClick={handleRefresh}>
@@ -142,7 +157,7 @@ const ProductsComponent = () => {
                     handleNo={() => {
                         setShow(false);
                     }} />
-            </>
+            </div>
         );
     }
 };

@@ -44,6 +44,7 @@ const productAPIClient = {
         }
         // Handle empty response for DELETE
         const text = await res.text();
+        // await new Promise(resolve=>setTimeout(resolve, 5000));
         return text ? JSON.parse(text) : { id: p.id };
     }
 };
