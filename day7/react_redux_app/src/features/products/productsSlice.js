@@ -61,7 +61,23 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async (_
     } catch (error) {
         return rejectWithValue(error.message || 'Error occured while getting products');
     }
-})
+});
+
+export const insertProduct = createAsyncThunk("products/insertProduct", async (product, { rejectWithValue }) => {
+    try {
+        return await productAPIClient.insertProduct(product);
+    } catch (error) {
+        return rejectWithValue(error.message || 'Error occured while adding product');
+    }
+});
+
+export const updateProduct = createAsyncThunk("products/updateProduct", async (product, { rejectWithValue }) => {
+    try {
+        return await productAPIClient.updateProduct(product);
+    } catch (error) {
+        return rejectWithValue(error.message || 'Error occured while updating products');
+    }
+});
 
 const productsState = {
     items: [],
@@ -85,6 +101,38 @@ export const productsSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchProducts.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+
+            .addCase(insertProduct.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(insertProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items.push(action.payload);
+                state.error = null;
+            })
+            .addCase(insertProduct.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+
+            .addCase(updateProduct.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const { id, ...updatedProduct } = action.payload;
+                const existingProduct = state.items.find(product => product.id === id);
+                if (existingProduct) {
+                    Object.assign(existingProduct, updatedProduct);
+                }
+                state.error = null;
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
             })

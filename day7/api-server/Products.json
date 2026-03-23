@@ -5,6 +5,19 @@
       "name": "Item One",
       "description": "Widget",
       "status": "Available"
+    },
+    {
+      "id": "c38xb5XvYHY",
+      "name": "Item Two",
+      "description": "Suprer Gadget",
+      "status": "Not Avaialable"
+    },
+    {
+      "id": "UiUBT91smdg",
+      "name": "Item Three",
+      "description": "Super Gadget",
+      "status": "Avialable"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

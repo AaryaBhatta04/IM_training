@@ -42,7 +42,10 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { fetchProducts } from "../../features/products/productsSlice";
+import { useReplaceHistoryState } from "../../hooks/useRelaceHistoryState";
+import ConfirmModal from '../common/ConfirmModal';
 import LoaderAnimation from "../common/LoaderAnimation";
 import ToastNotification from '../common/ToastNotification';
 import AddProductButton from "./AddProductButton";
@@ -52,11 +55,21 @@ const ProductsComponent = () => {
     const products = useSelector(state => state.products.items);
     const status = useSelector(state => state.products.status);
     const error = useSelector(state => state.products.error);
-
+    const location = useLocation();
     const dispatch = useDispatch();
 
     const [show, setShow] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
+
+    const replaceState = useReplaceHistoryState();
+
+    // Handle toast
+    useEffect(() => {
+        if (location.state?.toast) {
+            setToast({ ...location.state.toast, show: true });
+            replaceState();
+        }
+    }, [location, replaceState]);
 
     useEffect(() => {
         if (status === 'idle')
@@ -70,6 +83,10 @@ const ProductsComponent = () => {
         } catch (error) {
             setToast({ show: true, message: `Failed to refresh: ${error}`, type: 'danger' });
         }
+    }
+
+    const handleDeleteProduct = (product) => {
+        setShow(true);
     }
 
     if (error) {
@@ -99,13 +116,21 @@ const ProductsComponent = () => {
                         &nbsp;Refresh Products
                     </button>
                 </div>
-                <ProductListComponent products={products} />
+                <ProductListComponent products={products} onDelete={handleDeleteProduct} />
                 <ToastNotification
                     show={toast.show}
                     onClose={() => setToast({ ...toast, show: false })}
                     message={toast.message}
                     type={toast.type}
                 />
+                <ConfirmModal show={show} title={"Confirm Delete Product"}
+                    message={`Are you sure, you want to delete this product?`}
+                    handleYes={() => {
+                        setShow(false);
+                    }}
+                    handleNo={() => {
+                        setShow(false);
+                    }} />
             </>
         );
     }
